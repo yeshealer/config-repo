@@ -18,7 +18,7 @@ jobs:
           git clone https://github.com/yeshealer/config-repo.git temp
           git clone https://github.com/yeshealer/project1.git tmp
           echo "[LOG] Copying all cpp files from temp to tmp"
-          cp -r temp/* tmp/
+          cp -r temp/theme.ts tmp/theme.ts
           cd tmp
           echo "[LOG] Setup global config"
           git config --global user.email "yeshealer@gmail.com"
