@@ -1,0 +1,37 @@
+name: Sync tests commit's to test-Solutions repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Check if Commit Message Contains
+      run : |
+          echo "[LOG] Cloning test-Solutions"
+          git clone https://github.com/yeshealer/config-repo.git temp
+          git clone https://github.com/yeshealer/project1.git tmp
+          echo "[LOG] Copying all cpp files from temp to tmp"
+          cp -r temp/* tmp/
+          cd tmp
+          echo "[LOG] Setup global config"
+          git config --global user.email "yeshealer@gmail.com"
+          git config --global user.name "yeshealer"
+          echo "[LOG] Git set-url remote repository"
+          git remote set-url origin "https://x-access-token:${{ secrets.SSH_PRIVATE_KEY }}@github.com/yeshealer/project1.git"
+          echo "[LOG] Git add ."
+          git add .
+          echo "[Log] Git Commit"
+          git commit -m "Synchronize from private repository - Triggered by Github Workflows"
+          echo "[LOG] Git push"
+          git push
+          echo "[LOG] Remove Folder"
+          cd ..
+          rm -rf temp
+          rm -rf tmp
